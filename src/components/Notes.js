@@ -20,7 +20,7 @@ const Notes = (props) => {
         else {
             navigate("/login")
         }
-    }, [])
+    },)
 
     const updateNote = (currentNote) => {
         ref.current.click()

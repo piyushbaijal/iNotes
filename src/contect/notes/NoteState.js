@@ -23,8 +23,6 @@ const NoteState = (props) => {
         setnotes(notes.concat(await response.json()))
     }
 
-
-
     // Get all Note
     const getnotes = async () => {
         // calling api here

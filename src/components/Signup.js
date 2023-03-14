@@ -16,9 +16,10 @@ const Signup = (props) => {
             body: JSON.stringify({ name, email, password })
         });
         const json = await response.json();
-        console.log(json)
+        // console.log(json.name)
         if (json.success) {
             localStorage.setItem('token', json.authTocken);
+            localStorage.setItem('name', json.name);
             navigate("/");
             props.showAlert(" Sign Up Done ", "success ");
         }

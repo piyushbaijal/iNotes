@@ -17,13 +17,13 @@ const Login = (props) => {
             body: JSON.stringify({ email: credential.email, password: credential.password })
         });
         const json = await response.json();
-        console.log(json)
+        // console.log(json.name)
         if (json.success) {
             // console.log(JSON.stringify(json.authTocken), "trrrrrr");
             localStorage.setItem('token', json.authTocken);
+            localStorage.setItem('name', json.name);
             navigate("/")
             props.showAlert(" Login Successfull", "success ")
-
         }
         else {
             props.showAlert(" Login Failed", "danger ")

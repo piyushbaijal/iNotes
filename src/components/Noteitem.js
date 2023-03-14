@@ -14,7 +14,7 @@ function Noteitem(props) {
                     <p className="card-text">{note.tag}</p>
                     <i className="fa-regular fa-trash-can mx-1" onClick={() => {
                         context.deleteNote(note._id);
-                        console.log(note._id);
+                        // console.log(note._id);
                         showAlert(" Note Deleted", "danger ")
                     }}></i>
                     <i className="fa-regular fa-pen-to-square mx-1" onClick={() => { updateNote(note) }}></i>

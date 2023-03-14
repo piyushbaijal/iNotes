@@ -13,7 +13,7 @@ router.post('/createuser', [
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
-], async (req, res) => {
+], async(req, res) => {
     // Finds the validation errors in this request and wraps them in an object with handy functions 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -29,7 +29,7 @@ router.post('/createuser', [
         // creating hash for password for security
         const salt = await bcrypt.genSalt(10)
         secPass = await bcrypt.hash(req.body.password, salt)
-        // create new user 
+            // create new user 
         user = await User.create({
             name: req.body.name,
             email: req.body.email,
@@ -41,8 +41,9 @@ router.post('/createuser', [
             }
         }
         const authTocken = jwt.sign(data, JWT_SECRET);
+        const name = user.name;
         success = true;
-        res.json({ success, authTocken })
+        res.json({ success, authTocken, name })
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: "Try after sone times" })
@@ -53,7 +54,7 @@ router.post('/createuser', [
 router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password cannot be blank').exists(),
-], async (req, res) => {
+], async(req, res) => {
     // Finds the validation errors in this request and wraps them in an object with handy functions 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -79,14 +80,15 @@ router.post('/login', [
         //     user: user.id
         // }
         const data = {
-            user: {
-                id: user.id
+                user: {
+                    id: user.id
+                }
             }
-        }
-        // check stord data/authentication matches with cuurrent data or not
+            // check stord data/authentication matches with cuurrent data or not
         const authTocken = jwt.sign(data, JWT_SECRET);
+        const name = user.name;
         success = true;
-        res.json({ success, authTocken: authTocken })
+        res.json({ success, authTocken: authTocken, name: name })
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "server error try later" })
@@ -94,13 +96,15 @@ router.post('/login', [
 });
 
 // Route:3 Get loggedin detail using POST "/api/auth/getuser". no login required
-router.post('/getuser', fetchuser, async (req, res) => {
+router.post('/getuser', fetchuser, async(req, res) => {
 
     try {
         userId = req.user.id;
         const user = await User.findById(userId).select("-password")
-        // const user = await User.findOne(userId).select("-password")
+            // const user = await User.findOne(userId).select("-password")
         res.send(user)
+        console.log(user);
+        // res.json(user)
     } catch (error) {
         console.error(error.message, "error");
         res.status(500).send("Internal Server Error");
