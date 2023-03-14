@@ -1,8 +1,12 @@
-const connectToMongo = require('./db');
 const express = require('express');
+const dotenv = require('dotenv');
+const connectDb = require('./db');
 var cors = require('cors');
 
-connectToMongo();
+
+
+dotenv.config();
+connectDb();
 const app = express()
 const port = 5000
 
@@ -14,5 +18,5 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/notes', require('./routes/notes'))
 
 app.listen(port, () => {
-    console.log(`iNotes backend listening on port ${port}`)
+    console.log(`iNotes  backend listening on port ${port}`)
 })
